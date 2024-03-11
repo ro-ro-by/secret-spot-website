@@ -1,0 +1,21 @@
+baseURL: 'https://example.org/'
+languageCode: 'en-us'
+title: 'Secret Spot by ro-ro.by'
+theme: 'hugo-book'
+defaultContentLanguage: be
+defaultContentLanguageInSubdir: true
+params:
+  BookSearch: false
+languages:
+  be:
+    contentDir: content/be
+    languageCode: be-BY
+    languageDirection: ltr
+    languageName: Беларуская
+    weight: 1
+  ru:
+    contentDir: content/ru
+    languageCode: ru-RU
+    languageDirection: ltr
+    languageName: Русский
+    weight: 2
