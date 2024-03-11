@@ -1,12 +1,6 @@
 name: S3 deploy
 run-name: ${{ github.actor }} is deploying
-on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment'
-        type: environment
-        required: true
+on: workflow_dispatch
 jobs:
   main:
     runs-on: ubuntu-latest
