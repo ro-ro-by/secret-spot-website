@@ -1,0 +1,60 @@
+<style>
+    .book-menu, .book-toc {
+        display: none;
+    }
+</style>
+
+{{ $url := "https://artifacts.secret-spot-by.com/latest/kb-min.json" }}
+{{ $data := "" }}
+{{ $type := .Get "type" }}
+{{ with resources.GetRemote $url }}
+    {{ with .Err }}
+        {{ errorf "%s" . }}
+    {{ else }}
+        {{ $data = .Content | transform.Unmarshal }}
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">id</th>
+                    <th scope="col">title</th>
+                    <th scope="col">type</th>
+                    <th scope="col">subregion</th>
+                    <th scope="col">flags</th>
+                    <th scope="col">location</th>
+                    <th scope="col">sources</th>
+                </tr>
+            </thead>
+            {{ range $i, $item := $data.items }}
+                {{ if hasPrefix $item.id $type }}
+                    <tr class="item-row" id="item-{{ $item.id }}" data-item-id="{{ $item.id }}">
+                        <td>{{ add $i 1 }}</td>
+                        <td>{{ $item.id }}</td>
+                        <td>{{ $item.title  }}</td>
+                        <td>{{ $item.type  }}</td>
+                        <td>{{ $item.belongsTo.subregion  }}</td>
+                        <td>
+                            {{ if $item.images  }} 📷 {{ end }} {{ if $item.location  }} 🧭 {{ end }}
+                        </td>
+                        <td>
+                            {{ if $item.location }}
+                                {{ range $location := $item.location }}
+                                    {{ if eq $location.type "point" }}
+                                        <a href="https://nakarte.me/#m=14/{{$location.coordinates.lat}}/{{$location.coordinates.lon}}&l=O&r={{$location.coordinates.lat}}/{{$location.coordinates.lon}}">nakarte.me</a>
+                                     {{ end }}
+                                {{ end }}
+                            {{ end }}
+                        </td>
+                        <td>
+                            {{ range $source := $item.meta.source }}
+                            <a href="{{ $source.web.url }}">{{ $source.type }}</a>
+                            {{ end }}
+                        </td>
+                    </tr>
+                {{ end }}
+            {{ end }}
+        </table>
+    {{ end }}
+{{ else }}
+    {{ errorf "Unable to get remote resource %q" $url }}
+{{ end }}
