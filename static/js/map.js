@@ -36,7 +36,7 @@
      */
     function buildMap(container) {
         const osmLayer = new ol.layer.Tile({
-            className: 'bw',
+            className: 'ol-osm-layer',
             source: new ol.source.OSM(),
         });
 
