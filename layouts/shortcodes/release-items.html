@@ -12,7 +12,7 @@
         {{ errorf "%s" . }}
     {{ else }}
         {{ $data = .Content | transform.Unmarshal }}
-        <table>
+        <table class="release-data-container">
             <thead>
                 <tr>
                     <th scope="col">#</th>

@@ -1,0 +1,8 @@
+<div>
+    <div id="map-container" style="height: {{ .Get "height" }}px"></div>
+</div>
+<script>
+    SecretSpotMap.buildMap(
+        document.getElementById('map-container'),
+    );
+</script>
