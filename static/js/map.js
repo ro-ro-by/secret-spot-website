@@ -48,16 +48,17 @@
             }),
         });
 
-        const vectorLayer = new ol.layer.VectorTile({
-            declutter: true,
-            source: new ol.source.VectorTile({
-                attributions: '© SecretSpot',
-                format: new ol.format.MVT(),
-                url: 'https://tiles.secret-spot-by.com/vector/{z}/{x}/{y}.pbf',
-                maxZoom: 9,
-            }),
+        const vectorSource = new ol.source.VectorTile({
+            attributions: '© SecretSpot',
+            format: new ol.format.MVT(),
+            url: 'https://tiles.secret-spot-by.com/vector/{z}/{x}/{y}.pbf',
+            maxZoom: 9,
+        });
+
+        const vectorObjectsLayer = new ol.layer.VectorTile({
+            declutter: false,
+            source: vectorSource,
             style: function (feature) {
-                const title = `${feature.get('title')}\n[${feature.get('short_id')}]`;
                 const type = feature.get('type');
 
                 let color = 'gray';
@@ -90,6 +91,17 @@
                             width: 2
                         }),
                     }),
+                });
+            },
+        });
+
+        const vectorLabelLayer = new ol.layer.VectorTile({
+            declutter: true,
+            source: vectorSource,
+            style: function (feature) {
+                const title = `${feature.get('title')}\n[${feature.get('short_id')}]`;
+
+                return new ol.style.Style({
                     text: new ol.style.Text({
                         text: title,
                         textAlign: 'center',
@@ -113,7 +125,8 @@
             layers: [
                 osmLayer,
                 rasterLayer,
-                vectorLayer,
+                vectorObjectsLayer,
+                vectorLabelLayer,
             ],
             target: container,
             view: new ol.View({
@@ -126,11 +139,12 @@
             const isLowResolution = map.getView().getResolution() < 50;
 
             rasterLayer.setVisible(!isLowResolution);
-            vectorLayer.setVisible(isLowResolution);
+            vectorObjectsLayer.setVisible(isLowResolution);
+            vectorLabelLayer.setVisible(isLowResolution);
         };
 
         map.getView().on('change:resolution', () => onResolutionChange(map));
-        onFeatureClick(map, vectorLayer, (feature) => {
+        onFeatureClick(map, vectorObjectsLayer, (feature) => {
             const url = `/be/docs/releases/v0_1_0/data/#item-${feature.get('id')}`
 
             window.location.href = url;
