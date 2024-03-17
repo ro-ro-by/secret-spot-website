@@ -57,7 +57,7 @@
                 maxZoom: 9,
             }),
             style: function (feature) {
-                const title = feature.get('title');
+                const title = `${feature.get('title')}\n[${feature.get('short_id')}]`;
                 const type = feature.get('type');
 
                 let color = 'gray';
@@ -74,18 +74,34 @@
                 }
 
                 return new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 128, 0, 0.2)',
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: 'rgba(0, 0, 0, 0.5)',
+                    }),
                     image:  new ol.style.Circle({
                         radius: 5,
-                        fill: new ol.style.Fill({color: color}),
-                        stroke: new ol.style.Stroke({color: 'black', width: 2}),
+                        fill: new ol.style.Fill({
+                            color: color
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 0, 0, 0.5)',
+                            width: 2
+                        }),
                     }),
                     text: new ol.style.Text({
                         text: title,
-                        fill: new ol.style.Fill({color: 'black'}),
-                        stroke: new ol.style.Stroke({color: 'gray', width: 1}),
+                        textAlign: 'center',
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 0, 0)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(128, 128, 128)',
+                            width: 1
+                        }),
                         scale: 1.2,
-                        textAlign: 'left',
-                        offsetX: 10,
+                        offsetX: 0,
                         offsetY: -20
                     }),
                 });
@@ -115,7 +131,7 @@
 
         map.getView().on('change:resolution', () => onResolutionChange(map));
         onFeatureClick(map, vectorLayer, (feature) => {
-            const url = `/be/docs/releases/v0_1_0/data/#item-${feature.get('uid')}`
+            const url = `/be/docs/releases/v0_1_0/data/#item-${feature.get('id')}`
 
             window.location.href = url;
         });
