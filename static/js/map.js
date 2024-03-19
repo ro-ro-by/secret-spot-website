@@ -145,7 +145,7 @@
 
         map.getView().on('change:resolution', () => onResolutionChange(map));
         onFeatureClick(map, vectorObjectsLayer, (feature) => {
-            const url = `/be/docs/releases/v0_1_0/data/#item-${feature.get('id')}`
+            const url = `/be/docs/demo/data/all/#item-${feature.get('id')}`
 
             window.location.href = url;
         });
