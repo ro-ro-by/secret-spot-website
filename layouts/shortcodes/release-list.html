@@ -1,0 +1,39 @@
+{{ $url := "https://api.github.com/repos/ro-ro-by/secret-spot-kb/releases" }}
+{{ $data := "" }}
+{{ with resources.GetRemote $url }}
+    {{ with .Err }}
+        {{ errorf "%s" . }}
+    {{ else }}
+        {{ $data = .Content | transform.Unmarshal }}
+        <table class="release-data-container">
+            <thead>
+                <tr>
+                    <th scope="col">version</th>
+                    <th scope="col">released</th>
+                    <th scope="col">published</th>
+                    <th scope="col">artifacts</th>
+                </tr>
+            </thead>
+            {{ range $i, $item := $data }}
+                <tr>
+                    <td>
+                        <a href="{{ $item.html_url }}" title="{{ $item.tag_name }}">{{ $item.tag_name }}</a>
+                    </td>
+                    <td>{{ if not $item.prerelease  }} ✅ {{else}} 🚧 {{ end }}</td>
+                    <td>{{ $item.published_at | time.Format ":date_medium" }}</td>
+                    <td>
+                        <ul>
+                            {{ range $asset := $item.assets }}
+                            <li>
+                                <a href="{{ $asset.browser_download_url}}" title="{{ $asset.name }}">{{ $asset.name }}</a>
+                            </li>
+                            {{ end }}
+                        </ul>
+                    </td>
+                </tr>
+            {{ end }}
+        </table>
+    {{ end }}
+{{ else }}
+    {{ errorf "Unable to get remote resource %q" $url }}
+{{ end }}

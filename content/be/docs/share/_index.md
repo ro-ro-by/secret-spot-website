@@ -6,6 +6,44 @@ weight: 30
 
 **[Secret Spot]** прапануе некалькі спосабаў выкарыстанне дадзеных у залежнасці ад вашых мэтаў.
 
-## Tiles
+## Тайлы
 
-Тайлы для выкарыстоўвання на [tiled web map](https://en.wikipedia.org/wiki/Tiled_web_map)
+Тайлы дазваляюць дадаваць [SecretSpot] дадзеныя да мап у геа-сервісах, 
+якія падтрымліваюць адлюстроўванне [tiled web map](https://en.wikipedia.org/wiki/Tiled_web_map)
+
+### Растравыя тайлы
+
+| url template | `https://tiles.secret-spot-by.com/latest/raster/{z}/{x}/{y}.png` |      
+|--------------|------------------------------------------------------------------|
+| min zoom     | `1`                                                              |
+| max zoom     | `15`                                                             |
+
+- прыклад канфігурацыі [nakarte.me]({{< ref "tiles/nakarte" >}})
+- прыклад канфігурацыі [mapmagic.app]({{< ref "tiles/mapmagic" >}})
+
+### Вектарныя тайлы
+
+| url template | `https://tiles.secret-spot-by.com/latest/vector/{z}/{x}/{y}.pbf` |      
+|--------------|------------------------------------------------------------------|
+| min zoom     | `1`                                                              |
+| max zoom     | `10`                                                             |
+
+
+## Тэкставыя фарматы
+
+Тайлы дазваляюць дадаваць [SecretSpot] дадзеныя да навігацыйнах прылад і геасервісаў.
+Мы прапануем наступныя фарматы файлаў, якія вы можаце [спампаваць на старонцы рэлізаў](../releases)
+
+### Для навігацыі:
+
+- KML
+- GPX
+- GeoJSON
+
+### Для даследавання дадзеных
+
+- kb as YAML
+- kb as JSON
+
+{{< button-link href="../releases" title="Рэлізы" >}}Да старонкі рэлізаў{{< /button-link >}}
+
