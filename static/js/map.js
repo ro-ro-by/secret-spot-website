@@ -43,15 +43,15 @@
         const rasterLayer = new ol.layer.Tile({
             source: new ol.source.XYZ({
                 attributions: '© SecretSpot',
-                url: 'https://tiles.secret-spot-by.com/raster/{z}/{x}/{y}.png',
-                maxZoom: 11,
+                url: 'https://tiles.secret-spot-by.com/latest/raster/base/{z}/{x}/{y}.png',
+                maxZoom: 15,
             }),
         });
 
         const vectorSource = new ol.source.VectorTile({
             attributions: '© SecretSpot',
             format: new ol.format.MVT(),
-            url: 'https://tiles.secret-spot-by.com/vector/{z}/{x}/{y}.pbf',
+            url: 'https://tiles.secret-spot-by.com/latest/vector/base/{z}/{x}/{y}.pbf',
             maxZoom: 9,
         });
 
