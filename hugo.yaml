@@ -1,12 +1,12 @@
 baseURL: 'https://secret-spot-by.com/'
 languageCode: 'en-us'
-title: '[🙊] Secret Spot'
-TitleAddition: 'by ro-ro.by'
+title: 'Secret Spot'
 theme: 'hugo-book'
 defaultContentLanguage: be
 defaultContentLanguageInSubdir: true
 params:
   BookSearch: false
+  titlePrefix: '[🙊]'
 languages:
   be:
     contentDir: content/be
