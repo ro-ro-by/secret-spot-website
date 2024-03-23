@@ -1,5 +1,8 @@
 (function (window) {
-    const MAIN_IMAGE_TAG = 'image-tag:object:photo';
+    const MAIN_IMAGE_TAGS = [
+        'image-tag:object:photo',
+        'image-tag:object:overview',
+    ];
     const MEDIA_MEDIUM_STORAGE_URL = 'https://media.secret-spot-by.com/medium/';
     const SOURCE_FILE_BASE_URL = 'https://github.com/ro-ro-by/secret-spot-kb/blob/master/';
 
@@ -13,7 +16,7 @@
                 const image = item.images[i];
                 const tags = image.tags || [];
 
-                if (tags.includes(MAIN_IMAGE_TAG)) {
+                if (tags.filter(tag => MAIN_IMAGE_TAGS.includes(tag)).length) {
                     return image;
                 }
             }

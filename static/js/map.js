@@ -43,8 +43,11 @@
         lines.push(`<p>[${item.id}]</p>`)
 
         if (image) {
-            lines.push(`<div class="item-image">
-                <img alt="${item.title}" src="${kbUtils.getImageMediumSrc(image)}"/>
+            lines.push(`<div>
+                <div class="item-image">
+                    <img alt="${item.title}" src="${kbUtils.getImageMediumSrc(image)}"/>
+                </div>
+                <p>${image.meta?.author || ''} ${image.meta?.version ? '(' + image.meta?.version + ')' : ''}</p>
             </div>`);
         }
 
