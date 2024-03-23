@@ -1,0 +1,9 @@
+{{ $url := "https://github.com/ro-ro-by/secret-spot-kb/releases/download/0.1.0-beta.1/secret-spot-kb-min-0.1.0-beta.1.json" }}
+{{ $data := "" }}
+<script type="text/javascript">
+    {{ with resources.GetRemote $url }}
+        const KB_SOURCE = {{ .Content | transform.Unmarshal }};
+    {{ else }}
+        const KB_SOURCE = {};
+    {{ end }}
+</script>

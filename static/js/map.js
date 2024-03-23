@@ -1,5 +1,12 @@
 (function (window, ol) {
 
+    const VECTOR_FEATURE_TYPE_COLOR_DEFAULT = 'gray';
+    const VECTOR_FEATURE_TYPE_COLOR = {
+        'spring': 'blue',
+        'tree': 'orange',
+        'boulder': 'red'
+    };
+
     /**
      * Add event listener on feature click.
      */
@@ -7,17 +14,14 @@
         map.on('click', (e) => {
             layer.getFeatures(e.pixel)
                 .then(function (features) {
-                    const feature = features[0] ?? null;
-
-                    if (!feature) {
-                        return;
-                    }
-
-                    callback(feature);
+                    callback(e, features[0] ?? null);
                 });
         });
     }
 
+    /**
+     * Change cursor on feature hover.
+     */
     function cursorPointerOnFeatureHover(map) {
         map.on('pointermove', (e) => {
             const mapContainer = map.getTargetElement();
@@ -28,13 +32,150 @@
         });
     }
 
+    function buildFeatureInfoHtml(kb, feature) {
+        const id = feature.get('id');
+        const item = kb.getItemById(id);
+        const image = kbUtils.getItemMainImage(item);
+        const sourceFileUrl = kbUtils.getItemSourceFileUrl(item);
+
+        const lines = [];
+
+        lines.push(`<p><strong>${item.title}</strong></p>`)
+        lines.push(`<p>[${item.id}]</p>`)
+
+        if (image) {
+            lines.push(`<div class="item-image">
+                <img alt="${item.title}" src="${kbUtils.getImageMediumSrc(image)}"/>
+            </div>`);
+        }
+
+        const sources = item.meta?.source || [];
+        sources
+            .filter(source => source.type === 'web')
+            .forEach(source => {
+                lines.push(`<p><a title="source" href="${source.web?.url}">${source.web?.url}</a></p>`)
+            });
+
+        lines.push(`<p><a title="github" href="${sourceFileUrl}">github</a></p>`)
+
+        return `<div>${lines.join('')}</div>`;
+    }
+
+    /**
+     *
+     * @param {HTMLElement} container
+     */
+    function buildPopup(container) {
+        const popupEl = document.createElement('div');
+        popupEl.className = 'ol-popup';
+
+        const closerEl = document.createElement('a')
+        closerEl.className = 'ol-popup-closer';
+        closerEl.href = '#';
+
+        const contentEl = document.createElement('div');
+        contentEl.className = 'ol-popup-content';
+
+        popupEl.append(closerEl, contentEl);
+        container.append(popupEl);
+
+        /**
+         * Create an overlay to anchor the popup to the map.
+         */
+        const overlay = new ol.Overlay({
+            element: popupEl,
+            autoPan: {
+                animation: {
+                    duration: 250,
+                },
+            },
+        });
+
+        const close = () => {
+            overlay.setPosition(undefined);
+            closerEl.blur();
+        }
+
+        /**
+         * Add a click handler to hide the popup.
+         * @return {boolean} Don't follow the href.
+         */
+        closerEl.onclick = function () {
+            close();
+            return false;
+        };
+
+        return {
+            overlay,
+            close,
+            show(position, content) {
+                contentEl.innerHTML = content;
+                overlay.setPosition(position);
+            }
+        };
+    }
+
+    function buildGeometryLayerStyle(feature) {
+        const type = feature.get('type');
+        const color = VECTOR_FEATURE_TYPE_COLOR[type] || VECTOR_FEATURE_TYPE_COLOR_DEFAULT;
+
+        return buildGeometryLayerStyleByColor(color);
+    }
+
+    function buildGeometryLayerStyleByColor(color) {
+        return new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(0, 128, 0, 0.2)',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(0, 0, 0, 0.5)',
+            }),
+            image:  new ol.style.Circle({
+                radius: 5,
+                fill: new ol.style.Fill({
+                    color,
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(0, 0, 0, 0.5)',
+                    width: 2
+                }),
+            }),
+        });
+    }
+
+    function buildTitleLayerStyle(feature) {
+        const title = feature.get('title');
+        const shortId = feature.get('short_id');
+
+        const label = `${title}\n[${shortId}]`;
+
+        return new ol.style.Style({
+            text: new ol.style.Text({
+                text: label,
+                textAlign: 'center',
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 0, 0)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(128, 128, 128)',
+                    width: 1
+                }),
+                scale: 1.2,
+                offsetX: 0,
+                offsetY: -20
+            }),
+        });
+    }
+
     /**
      * Build map to container.
      *
-     * @param container
+     * @param {HTMLElement} container
      * @returns {ol.Map}
      */
     function buildMap(container) {
+        const popup = buildPopup(container.parentElement);
+
         const osmLayer = new ol.layer.Tile({
             className: 'ol-osm-layer',
             source: new ol.source.OSM(),
@@ -58,66 +199,13 @@
         const vectorObjectsLayer = new ol.layer.VectorTile({
             declutter: false,
             source: vectorSource,
-            style: function (feature) {
-                const type = feature.get('type');
-
-                let color = 'gray';
-                switch (type) {
-                    case 'spring':
-                        color = 'blue';
-                        break;
-                    case 'tree':
-                        color = 'orange';
-                        break;
-                    case 'boulder':
-                        color = 'red';
-                        break;
-                }
-
-                return new ol.style.Style({
-                    fill: new ol.style.Fill({
-                        color: 'rgba(0, 128, 0, 0.2)',
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(0, 0, 0, 0.5)',
-                    }),
-                    image:  new ol.style.Circle({
-                        radius: 5,
-                        fill: new ol.style.Fill({
-                            color: color
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(0, 0, 0, 0.5)',
-                            width: 2
-                        }),
-                    }),
-                });
-            },
+            style: buildGeometryLayerStyle,
         });
 
         const vectorLabelLayer = new ol.layer.VectorTile({
             declutter: true,
             source: vectorSource,
-            style: function (feature) {
-                const title = `${feature.get('title')}\n[${feature.get('short_id')}]`;
-
-                return new ol.style.Style({
-                    text: new ol.style.Text({
-                        text: title,
-                        textAlign: 'center',
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 0, 0)'
-                        }),
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(128, 128, 128)',
-                            width: 1
-                        }),
-                        scale: 1.2,
-                        offsetX: 0,
-                        offsetY: -20
-                    }),
-                });
-            },
+            style: buildTitleLayerStyle,
         });
 
         const map = new ol.Map({
@@ -127,6 +215,9 @@
                 rasterLayer,
                 vectorObjectsLayer,
                 vectorLabelLayer,
+            ],
+            overlays: [
+                popup.overlay,
             ],
             target: container,
             view: new ol.View({
@@ -144,14 +235,20 @@
         };
 
         map.getView().on('change:resolution', () => onResolutionChange(map));
-        onFeatureClick(map, vectorObjectsLayer, (feature) => {
-            const url = `/be/docs/demo/data/all/#item-${feature.get('id')}`
 
-            window.location.href = url;
+        const kb = initKbInstance(KB_SOURCE);
+
+        onFeatureClick(map, vectorObjectsLayer, (event, feature) => {
+            if (!feature) {
+                popup.close();
+                return;
+            }
+
+            popup.show(event.coordinate, buildFeatureInfoHtml(kb, feature));
         });
+
         onResolutionChange(map);
         cursorPointerOnFeatureHover(map);
-
 
         return map;
     }
