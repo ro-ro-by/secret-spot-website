@@ -1,5 +1,6 @@
 ---
 title: 'Усе аб''екты'
+bookHidden: true
 weight: 10
 ---
 # Усе аб'екты

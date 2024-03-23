@@ -58,7 +58,7 @@
                 lines.push(`<p><a title="source" target="_blank" href="${source.web?.url}">${source.web?.url}</a></p>`)
             });
 
-        lines.push(`<p><a title="github" target="_blank" href="${sourceFileUrl}">github</a></p>`)
+        lines.push(`<p><a title="github" target="_blank" href="${sourceFileUrl}">[🙊] Secret Spot GitHub</a></p>`)
 
         return `<div>${lines.join('')}</div>`;
     }
