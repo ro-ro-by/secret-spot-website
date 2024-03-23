@@ -187,7 +187,7 @@
             source: new ol.source.XYZ({
                 attributions: '© SecretSpot',
                 url: 'https://tiles.secret-spot-by.com/latest/raster/base/{z}/{x}/{y}.png',
-                maxZoom: 15,
+                maxZoom: 14,
             }),
         });
 

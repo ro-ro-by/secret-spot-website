@@ -16,7 +16,7 @@ bookHidden: true
    | Tile url template | `https://tiles.secret-spot-by.com/latest/raster/base/{z}/{x}/{y}.png` | прыклад, выкарыстоўвайце канфігурацыю [адсюль](../../raster) |
    | Type              | `Overlay`                                                             |                                                              |
    | Position          | `Place above other layers`                                            |                                                              |
-   | Max zoom          | `15`                                                                  | прыклад, выкарыстоўвайце канфігурацыю [адсюль](../../raster) |
+   | Max zoom          | `14`                                                                  | прыклад, выкарыстоўвайце канфігурацыю [адсюль](../../raster) |
 
 ![Add custom layer](./../nakarte/step-2.png)
 
