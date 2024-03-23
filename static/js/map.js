@@ -1,5 +1,4 @@
 (function (window, ol) {
-
     const VECTOR_FEATURE_TYPE_COLOR_DEFAULT = 'gray';
     const VECTOR_FEATURE_TYPE_COLOR = {
         'spring': 'blue',
@@ -236,6 +235,9 @@
 
         map.getView().on('change:resolution', () => onResolutionChange(map));
 
+        onResolutionChange(map);
+        cursorPointerOnFeatureHover(map);
+
         const kb = initKbInstance(KB_SOURCE);
 
         onFeatureClick(map, vectorObjectsLayer, (event, feature) => {
@@ -246,9 +248,6 @@
 
             popup.show(event.coordinate, buildFeatureInfoHtml(kb, feature));
         });
-
-        onResolutionChange(map);
-        cursorPointerOnFeatureHover(map);
 
         return map;
     }
