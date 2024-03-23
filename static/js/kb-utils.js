@@ -26,13 +26,7 @@
         },
 
         getItemSourceFileUrl: function (item) {
-            const sourceFilePath = [
-                item.belongsTo.region.split('-')[1],
-                item.belongsTo.subregion.split('-')[1],
-                item.id + '.yaml'
-            ].join('/');
-
-            return SOURCE_FILE_BASE_URL + sourceFilePath;
+            return SOURCE_FILE_BASE_URL + item['__system__'].source;
         },
     };
 })(window);
