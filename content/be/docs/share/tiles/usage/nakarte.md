@@ -10,13 +10,13 @@ bookHidden: true
 ## 2. Запаўняем форму
 
 
-   |                   |                                                                       |                                                                                   |
-   |-------------------|-----------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-   | Layer name        | `Secret Spot`                                                         |                                                                                   |
-   | Tile url template | `https://tiles.secret-spot-by.com/latest/raster/base/{z}/{x}/{y}.png` | прыклад, выкарыстоўвайце канфігурацыю [адсюль]({{< ref "/share/tiles/raster" >}}) |
-   | Type              | `Overlay`                                                             |                                                                                   |
-   | Position          | `Place above other layers`                                            |                                                                                   |
-   | Max zoom          | `14`                                                                  | прыклад, выкарыстоўвайце канфігурацыю [адсюль]({{< ref "/share/tiles/raster" >}}) |
+   |                   |                                                                       |                                                                                        |
+   |-------------------|-----------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+   | Layer name        | `Secret Spot`                                                         |                                                                                        |
+   | Tile url template | `https://tiles.secret-spot-by.com/latest/raster/base/{z}/{x}/{y}.png` | прыклад, выкарыстоўвайце канфігурацыю [адсюль]({{< ref "/docs/share/tiles/raster" >}}) |
+   | Type              | `Overlay`                                                             |                                                                                        |
+   | Position          | `Place above other layers`                                            |                                                                                        |
+   | Max zoom          | `14`                                                                  | прыклад, выкарыстоўвайце канфігурацыю [адсюль]({{< ref "/docs/share/tiles/raster" >}}) |
 
 ![Add custom layer](./../nakarte/step-2.png)
 
