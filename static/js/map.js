@@ -1,4 +1,5 @@
 (function (window, ol) {
+    const MAP_LOADER_CLASS = 'spinner';
     const VECTOR_FEATURE_TYPE_COLOR_DEFAULT = 'gray';
     const VECTOR_FEATURE_TYPE_COLOR = {
         'spring': 'blue',
@@ -21,13 +22,26 @@
     /**
      * Change cursor on feature hover.
      */
-    function cursorPointerOnFeatureHover(map) {
+    function initCursorPointerOnFeatureHover(map) {
         map.on('pointermove', (e) => {
             const mapContainer = map.getTargetElement();
             const pixel = map.getEventPixel(e.originalEvent);
             const hit = map.hasFeatureAtPixel(pixel);
 
             mapContainer.style.cursor =  hit ? 'pointer' : '';
+        });
+    }
+
+    /**
+     * Add spinner on map loading.
+     */
+    function initSpinnerOnLoadingData(map) {
+        map.on('loadstart', function () {
+            map.getTargetElement().classList.add(MAP_LOADER_CLASS);
+        });
+
+        map.on('loadend', function () {
+            map.getTargetElement().classList.remove(MAP_LOADER_CLASS);
         });
     }
 
@@ -239,10 +253,11 @@
         map.getView().on('change:resolution', () => onResolutionChange(map));
 
         onResolutionChange(map);
-        cursorPointerOnFeatureHover(map);
+
+        initCursorPointerOnFeatureHover(map);
+        initSpinnerOnLoadingData(map);
 
         const kb = initKbInstance(KB_SOURCE);
-
         onFeatureClick(map, vectorObjectsLayer, (event, feature) => {
             if (!feature) {
                 popup.close();
