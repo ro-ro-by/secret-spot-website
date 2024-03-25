@@ -2,32 +2,37 @@
     <div id="map-container" class="map-container" style="height: {{ .Get "height" }}px"></div>
 </div>
 <script>
-    (function (container) {
-        const osmLayer = new ol.layer.Tile({
-            className: 'ol-osm-layer',
-            source: new ol.source.OSM(),
+    (function () {
+        window.addEventListener('load', () => {
+            initMap(document.getElementById('map-container'));
         });
 
-        const rasterLayer = new ol.layer.Tile({
-            source: new ol.source.XYZ({
-                attributions: '© SecretSpot',
-                url: 'https://tiles.secret-spot-by.com/latest/raster/base/{z}/{x}/{y}.png',
-                maxZoom: 14,
-            }),
-        });
+        function initMap(container) {
+            const osmLayer = new ol.layer.Tile({
+                className: 'ol-osm-layer',
+                source: new ol.source.OSM(),
+            });
 
-        const map = new ol.Map({
-            controls: ol.control.defaults.defaults().extend([new ol.control.FullScreen()]),
-            layers: [
-                osmLayer,
-                rasterLayer,
-            ],
-            target: container,
-            view: new ol.View({
-                center: ol.proj.fromLonLat([27.95, 53.70]),
-                zoom: 6,
-            }),
-        });
+            const rasterLayer = new ol.layer.Tile({
+                source: new ol.source.XYZ({
+                    attributions: '© SecretSpot',
+                    url: 'https://tiles.secret-spot-by.com/latest/raster/base/{z}/{x}/{y}.png',
+                    maxZoom: 14,
+                }),
+            });
 
-    })(document.getElementById('map-container'));
+            const map = new ol.Map({
+                controls: ol.control.defaults.defaults().extend([new ol.control.FullScreen()]),
+                layers: [
+                    osmLayer,
+                    rasterLayer,
+                ],
+                target: container,
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([27.95, 53.70]),
+                    zoom: 6,
+                }),
+            });
+        }
+    })();
 </script>

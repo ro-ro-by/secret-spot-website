@@ -1,0 +1,2 @@
+{{ $js := (resources.Match "**/*.js") | resources.Concat "js/bundle.js" | minify | resources.Fingerprint "sha512" }}
+<script src="{{ $js.RelPermalink }}"></script>

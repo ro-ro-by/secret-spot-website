@@ -1,4 +1,4 @@
-(function (window, ol) {
+(function (window) {
     const MAP_LOADER_CLASS = 'spinner';
     const VECTOR_FEATURE_TYPE_COLOR_DEFAULT = 'gray';
     const VECTOR_FEATURE_TYPE_COLOR = {
@@ -273,4 +273,4 @@
     window.SecretSpotMap = {
         buildMap,
     };
-})(window, ol);
+})(window);
