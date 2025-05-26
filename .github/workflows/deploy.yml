@@ -30,7 +30,7 @@ jobs:
       #####
       - name: Build artifacts
         run: |
-          docker run -v ./src:/src --rm hugomods/hugo hugo
+          docker run -v ./src:/src --rm hugomods/hugo@sha256:7cdfb0e7198e9681807050e64727e154a6379b1537ced9fd2de5cac23da0a534 hugo
 
       - name: Deploy artifacts to S3 bucket
         run: |
