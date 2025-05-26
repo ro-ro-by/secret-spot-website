@@ -28,6 +28,18 @@ bookHidden: true
 | min zoom | `1`                                                                   |
 | max zoom | `14`                                                                  |
 
+
+### v0.2.0
+
+Пласт версіі `0.2.0`.
+
+|          |                                                                      |
+|----------|----------------------------------------------------------------------|
+| url      | `https://tiles.secret-spot-by.com/0.2.0/raster/base/{z}/{x}/{y}.png` |      
+| min zoom | `1`                                                                  |
+| max zoom | `14`                                                                 |
+
+
 ## Прыклады выкарыстання
 
 - прыклад канфігурацыі [nakarte.me]({{< ref "./usage/nakarte" >}})

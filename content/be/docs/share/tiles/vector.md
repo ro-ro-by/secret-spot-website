@@ -27,3 +27,14 @@ bookHidden: true
 | url      | `https://tiles.secret-spot-by.com/0.1.0/vector/base/{z}/{x}/{y}.pbf`  |      
 | min zoom | `1`                                                                   |
 | max zoom | `9`                                                                   |
+
+
+### v0.2.0
+
+Пласт версіі `0.2.0`.
+
+|          |                                                                      |
+|----------|----------------------------------------------------------------------|
+| url      | `https://tiles.secret-spot-by.com/0.2.0/vector/base/{z}/{x}/{y}.pbf` |      
+| min zoom | `1`                                                                  |
+| max zoom | `9`                                                                  |
